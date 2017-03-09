@@ -24,7 +24,7 @@ class UserAsk(models.Model):
 
 
 class CourseComments(models.Model):
-    user = models.ForeignKey(UserProfile, verbose_name=u"用户", default="")
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
     course = models.ForeignKey(Course, verbose_name=u"课程", default="")
     comments = models.CharField(max_length=200, verbose_name=u"评论", default="")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
@@ -38,7 +38,7 @@ class CourseComments(models.Model):
 
 
 class UserFavorite(models.Model):
-    user = models.ForeignKey(UserProfile, verbose_name=u"用户名", default="")
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户名")
     fav_id = models.IntegerField(default=0, verbose_name=u"数据ID")
     fav_type = models.IntegerField(choices=((1, "课程"),(2, "课程机构"),(3, "讲师")), default=1, verbose_name=u"收藏类型")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
@@ -52,7 +52,7 @@ class UserFavorite(models.Model):
 
 
 class UserMessage(models.Model):
-    user = models.IntegerField(default=0, verbose_name=u"接收用户")
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
     message = models.CharField(max_length=500, verbose_name=u"消息内容", default="")
     has_read = models.BooleanField(default=False, verbose_name=u"是否已读")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"发送时间")
@@ -66,7 +66,7 @@ class UserMessage(models.Model):
 
 
 class UserCourse(models.Model):
-    user = models.ForeignKey(UserProfile, verbose_name=u"用户", default="")
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
     course = models.ForeignKey(Course, verbose_name=u"课程", default="")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"学习时间")
 
@@ -75,6 +75,5 @@ class UserCourse(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-         return self.user.username     # 这里不能直接用 user 会出错，因为数据表作了关联，user没有具体值
-
+         return self.user.username
 

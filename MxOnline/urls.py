@@ -25,6 +25,7 @@ from users.views import loginView, RegisterView, AciveUserView, ForgetWodView, R
 from organization.views import OrgView
 from MxOnline.settings import MEDIA_ROOT
 urlpatterns = [
+    url(r'^admin/', admin.site.urls),
     url(r'^xadmin/', xadmin.site.urls),
 
     url('^$', TemplateView.as_view(template_name="index.html"),name="index"),

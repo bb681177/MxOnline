@@ -3,12 +3,13 @@ from __future__ import unicode_literals
 from datetime import datetime
 
 from django.db import models
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 # Create your models here.
 
 
 class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name=u"课程机构", null=True)
+    teacher = models.ForeignKey(Teacher,verbose_name=u"课程讲师",null=True)
     name = models.CharField(max_length=50, verbose_name=u"课程名")
     desc = models.TextField(max_length=300, verbose_name=u"课程描述")
     detail = models.TextField(verbose_name=u"课程详情")
@@ -21,13 +22,13 @@ class Course(models.Model):
     click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
     tag = models.CharField(max_length=10, verbose_name=u"课程标签", default="")
+    youneed_know = models.TextField(max_length=300, verbose_name=u"课程须知", null=True)
+    teacher_tell = models.TextField(max_length=300, verbose_name=u"学到什么", null=True)
+
 
     class Meta:
         verbose_name = u"课程"
         verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.name
 
     def get_zj_nums(self):
         # 获取课程章节数
@@ -35,6 +36,13 @@ class Course(models.Model):
 
     def get_learn_users(self):
         return self.usercourse_set.all()[:5]
+
+    def get_course_lesson(self):
+        # 获取课程章节
+        return self.lesson_set.all()
+
+    def __unicode__(self):
+        return self.name
 
 
 class lesson(models.Model):
@@ -49,10 +57,16 @@ class lesson(models.Model):
     def __unicode__(self):
         return  self.name
 
+    def get_lesson_video(self):
+        # 获取章节视频
+        return self.video_set.all()
+
 
 class Video(models.Model):
     lesson = models.ForeignKey(lesson, verbose_name=u"章节")
     name = models.CharField(max_length=100, verbose_name=u"视频名")
+    learn_times = models.IntegerField(default=0, verbose_name=u"学习时长（分钟）")
+    url = models.CharField(max_length=200, verbose_name=u"访问地址", default=" ")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
     class Meta:
