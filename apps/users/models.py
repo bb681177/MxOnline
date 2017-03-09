@@ -23,6 +23,7 @@ class UserProfile(AbstractUser):
     def __unicode__(self):
         return self.username
 
+
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20, verbose_name=u"验证码")
     email = models.EmailField(max_length=50,verbose_name=u"邮箱")
@@ -34,7 +35,8 @@ class EmailVerifyRecord(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-         return  self.code
+         return self.code
+
 
 class Banner(models.Model):
     title = models.CharField(max_length=100, verbose_name=u"图片名")
@@ -48,4 +50,4 @@ class Banner(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return  self.title
+        return self.title
